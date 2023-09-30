@@ -15,5 +15,5 @@ async def source(ctx, cmd: str):
         await ctx.reply(file=discord.File(cox, filename=f"{cmd}.py"), mention_author=False)
     else:
         await ctx.reply(f"**{cmd}** isn't a valid cmd", mention_author=False)
-plus.run("token", bot=False)
+plus.run("token", bot=False) #replace token with your discord client token
 
