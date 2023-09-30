@@ -11,8 +11,8 @@ async def ping(ctx):
 async def source(ctx, cmd: str):
     command = plus.get_command(cmd)
     if command:
-        src = inspect.getsource(command.callback); cox = io.BytesIO(src.encode("utf-8"))
-        await ctx.reply(file=discord.File(cox, filename=f"{cmd}.py"), mention_author=False)
+        src = inspect.getsource(command.callback); x = io.BytesIO(src.encode("utf-8"))
+        await ctx.reply(file=discord.File(x, filename=f"{cmd}.py"), mention_author=False)
     else:
         await ctx.reply(f"**{cmd}** isn't a valid cmd", mention_author=False)
 plus.run("token", bot=False) #replace token with your discord client token
