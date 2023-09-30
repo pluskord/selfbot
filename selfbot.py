@@ -26,4 +26,10 @@ async def avatar(ctx, *, member: discord.User = None):
     if member is None:
         member = ctx.author
     await ctx.reply(f"{member.avatar_url if member.avatar else member.default_avatar_url}", mention_author=False)
+@plus.command(aliases=["enc"])
+async def encode(ctx, *, message: str):
+    await ctx.reply(content=f"> original content\n```\n{message}\n```\n> encoded as\n```{base64.b64encode(message.encode()).decode('utf-8')}\n```", mention_author=False)
+@plus.command(aliases=["dcd"])
+async def decode(ctx, *, message: str):
+    await ctx.reply(content=f"> encoded content as\n```\n{message}\n```\n> original content\n```{base64.b64decode(message).decode('utf-8')}\n```", mention_author=False)
 plus.run("token", bot=False) #replace token with your discord client token
