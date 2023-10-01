@@ -1,4 +1,4 @@
-import discord, asyncio, inspect, io; from discord.ext import commands
+import discord, asyncio, inspect, io, base64, time; from discord.ext import commands
 plus=commands.Bot(command_prefix="$", intents=discord.Intents.all(), self_bot=True)
 @plus.event
 async def on_command_error(ctx, error):
@@ -32,4 +32,18 @@ async def encode(ctx, *, message: str):
 @plus.command(aliases=["dcd"])
 async def decode(ctx, *, message: str):
     await ctx.reply(content=f"> encoded content as\n```\n{message}\n```\n> original content\n```{base64.b64decode(message).decode('utf-8')}\n```", mention_author=False)
+@plus.command()
+async def unbanall(ctx: commands.Context):
+    async def unban(ban):
+        await ctx.guild.unban(ban.user)
+        return ban.user
+    start = time.time()
+    bans = await asyncio.gather(*[unban(ban) for ban in await ctx.guild.bans()])
+    end = time.time()
+    elapsed = end - start
+    await ctx.reply(f"unbanned **{len(bans)}** users in *`{elapsed:.2f}`* seconds", mention_author=False)
+@plus.command()
+async def bans(ctx): 
+    bans = await ctx.guild.bans()
+    await ctx.reply(f"> **{len(bans)}** bans in *{ctx.guild.name}*", mention_author=False)
 plus.run("token", bot=False) #replace token with your discord client token
