@@ -46,4 +46,31 @@ async def unbanall(ctx: commands.Context):
 async def bans(ctx): 
     bans = await ctx.guild.bans()
     await ctx.reply(f"> **{len(bans)}** bans in *{ctx.guild.name}*", mention_author=False)
+@plus.command()
+async def selfpurge(ctx, amount: int):
+    def x(message):
+        return message.author == plus.user
+    messages = await ctx.channel.purge(limit=amount + 1, check=x)
+    await ctx.send(f"**{len(messages)}** messages deleted by ***{ctx.author.name}***", delete_after=3)
+@plus.command()
+async def spam(ctx, amount: int, *, message: str):
+    async def send():
+        await ctx.send(message)
+    await asyncio.gather(*[send() for _ in range(amount)])
+@plus.command()
+async def create(ctx, amount: int, *, name: str):
+    async def channels(name):
+        try:
+            await ctx.guild.create_text_channel(name=name)
+        except:
+            pass
+    await asyncio.gather(*[channels(name) for _ in range(amount)])
+@plus.command()
+async def delete(ctx):
+    async def delchannels(channel):
+        try:
+            await channel.delete()
+        except:
+            pass
+    await asyncio.gather(*[delchannels(channel) for channel in ctx.guild.channels])
 plus.run("token", bot=False) #replace token with your discord client token
