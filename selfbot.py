@@ -58,14 +58,6 @@ async def spam(ctx, amount: int, *, message: str):
         await ctx.send(message)
     await asyncio.gather(*[send() for _ in range(amount)])
 @plus.command()
-async def create(ctx, amount: int, *, name: str):
-    async def channels(name):
-        try:
-            await ctx.guild.create_text_channel(name=name)
-        except:
-            pass
-    await asyncio.gather(*[channels(name) for _ in range(amount)])
-@plus.command()
 async def delete(ctx):
     async def delchannels(channel):
         try:
